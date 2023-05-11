@@ -1,0 +1,87 @@
+.App {
+  background-color: white;
+}
+
+.Auth-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Auth-form {
+  width: 420px;
+  box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
+  padding-top: 5px;
+  padding-bottom: 20px;
+  border-radius: 8px;
+  background-color: white;
+  margin: 50px 40px 40px;
+}
+
+.Auth-form-content {
+  padding-left: 12%;
+  padding-right: 12%;
+}
+
+.Auth-form-title {
+  text-align: center;
+  margin-bottom: 1em;
+  font-size: 24px;
+  color: rgb(34, 34, 34);
+  font-weight: 800;
+}
+
+label {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(34, 34, 34);
+}
+
+.gallery{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.hall{
+  margin-left: 40px;
+  margin-right: 40px;
+  margin-top: 24px;
+  margin-bottom: 40px;
+  width: 416px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-self: flex-start;
+}
+.cardImage {
+  border-radius: 3%;
+  width: 416px;
+  height: 416px;
+  border-style: solid;
+  border-width: 2px;
+}
+.item{
+  margin: 20px 20px 20px;
+  width: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-self: flex-start;
+  border-color: #0b5ed7;
+  background-color: #c9d5f1;
+}
+.menu{
+  margin-top: 50px;
+  margin-bottom: 30px;
+  margin-left: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
