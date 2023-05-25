@@ -6,12 +6,12 @@ import {common} from "@mui/material/colors";
 
 
 export const url = "http://localhost:5000"
-//export const url = ""
-//export const url = "http://localhost:5000"
+    //export const url = ""
+export const baseUrl = "http://localhost:5000"
 //export const baseUrl = process.env.APP_API_BASE_URL
 
 export const instance = axios.create({
-    baseURL: url
+    baseURL: baseUrl
 });
 
 instance.interceptors.request.use(function (config) {
@@ -106,3 +106,23 @@ export const WorkerRoute =
         return auth ? children : <Navigate to="/profile"/>;
     };
 
+export const AdministrationRoute =
+    ({children}) => {
+        const [auth, setAuth] = useState(true)
+        try {
+            instance.get("/checkAdministration")
+                .catch(error => {
+                    if (error.response.status === 403) {
+                        setAuth(false)
+                    } else {
+                        console.log(error.response.data.message);
+                    }
+                })
+        } catch
+            (error) {
+            if (error.response) {
+                console.log(error.response.data.message);
+            }
+        }
+        return auth ? children : <Navigate to="/profile"/>;
+    };

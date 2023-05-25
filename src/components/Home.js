@@ -21,7 +21,7 @@ export const Home = (props) => {
     }
 
     try {
-        instance.get("/me").then(res => {
+        instance.get("/user/me").then(res => {
             setEmail(res.data.userData.email)
             setBirthday(res.data.userData.birthday)
             setFirstName(res.data.userData.firstName)
@@ -29,6 +29,7 @@ export const Home = (props) => {
             setPhone(res.data.userData.phone)
             setAvatarUrl(res.data.userData.avatarUrl)
             setRole(res.data.userData.userRole)
+            props.currentRole(res.data.userData.userRole)
         })
             .catch(error => {
                 console.log(error.response.data.message);
@@ -48,7 +49,7 @@ export const Home = (props) => {
     const onDelete = () => {
         if (window.confirm("Are you sure you want to delete your account?")) {
             try {
-                instance.delete("/me/deleteAccount").then(res => {
+                instance.delete("/user/me/deleteAccount").then(res => {
                     onLogout();
                 })
                     .catch(error => {
@@ -67,7 +68,7 @@ export const Home = (props) => {
         return <Navigate to="/"/>
     }
 
-    props.currentRole(role)
+
 
     return (
         <div className="Auth-form-container">

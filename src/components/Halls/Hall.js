@@ -1,16 +1,12 @@
-import React, {useState} from "react";
-import {useNavigate} from "react-router";
-import {instance, url} from "../axios";
+import {instance, url} from "../../axios";
 
 export const Hall = (props) => {
     const hall = props.hall
-    const navigate = useNavigate();
-    console.log(props)
 
     const onDelete = () => {
         if (window.confirm("Are you sure you want to delete this hall?")) {
             try {
-                instance.delete(`/hall/delete/${props.id}`)
+                instance.delete(`/hall/delete/${hall._id}`)
                     .catch(error => {
                         console.log(error.response.data.message);
                     })
@@ -33,7 +29,6 @@ export const Hall = (props) => {
 
                     </div>
                     <div className="form-group mt-3">
-                        {props.render}
                         <div className={"d-flex justify-content-center"}>
                             <p style={{marginTop: "20px"}}> Capacity: {hall.capacity} </p>
                         </div>
@@ -49,12 +44,14 @@ export const Hall = (props) => {
                     </div>
                 </div>
                 <div className={"d-flex justify-content-center"} style={{marginBottom: "8px"}}>
-                    <button onClick={() => {props.updating(props.id)}} className="btn btn-secondary">
+                    <button onClick={() => {
+                        props.updating(hall._id)
+                    }} className="btn btn-secondary">
                         {`Edit ${hall.name} info`}
                     </button>
                 </div>
                 <div className={"d-flex justify-content-center"}>
-                    <button onClick={onDelete} className="btn btn-secondary">
+                    <button onClick={onDelete} className="btn btn-danger">
                         {`Delete ${hall.name}`}
                     </button>
                 </div>

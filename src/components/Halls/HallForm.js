@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import "bootstrap/dist/css/bootstrap.min.css"
 import {Link} from "react-router-dom"
-import {instance, url} from "../axios.js";
+import {instance, url} from "../../axios.js";
 import {useForm} from "react-hook-form"
 import TextField from "@mui/material/TextField";
 import Select from "@mui/material/Select";
@@ -17,22 +17,21 @@ export const HallForm = (props) => {
     const [status, setStatus] = useState("")
     const [details, setDetails] = useState("")
     const [rows, setRows] = useState("")
-    const [creation, setCreation] = useState(false)
-    const [edition, setEdition] = useState(false)
     const update = props.update
     const hall = props.hall
 
-    const {handleSubmit, formState: {errors, isValid}} = useForm({})
+    const {handleSubmit, formState: {errors}} = useForm({})
 
     const hallSubmit = () => {
         try {
             instance.post('/hall/create', {
-                name: name,
-                capacity: capacity,
-                rows: rows,
-                details: details,
+                name: name, capacity: capacity, rows: rows, details: details,
             }).then(res => {
-                setCreation(true)
+                navigation('/halls', {
+                    state: {
+                        msg: `You have created new hall - ${name}`,
+                    }
+                });
             }).catch(error => {
                 if (error.response.status === 400) {
                     const msg = error.response.data[0];
@@ -41,8 +40,7 @@ export const HallForm = (props) => {
                     setErrorMsg(error.response.data.message);
                 }
             })
-        } catch
-            (error) {
+        } catch (error) {
             if (error.response) {
                 console.log(error.response.data.message);
             }
@@ -52,11 +50,7 @@ export const HallForm = (props) => {
     const hallUpdate = () => {
         try {
             instance.patch(`/hall/update/${hall._id}`, {
-                name: name,
-                capacity: capacity,
-                rows: rows,
-                details: details,
-                status: status
+                name: name, capacity: capacity, rows: rows, details: details, status: status
             }).then(res => {
                 props.cancelling("")
             }).catch(error => {
@@ -67,23 +61,12 @@ export const HallForm = (props) => {
                     setErrorMsg(error.response.data.message);
                 }
             })
-        } catch
-            (error) {
+        } catch (error) {
             if (error.response) {
                 console.log(error.response.data.message);
             }
         }
     }
-
-
-    if (creation) {
-        navigation('/halls', {
-            state: {
-                msg: `You have created new hall - ${name}`,
-            }
-        });
-    }
-
 
     useEffect(() => {
         if (hall) {
@@ -96,11 +79,10 @@ export const HallForm = (props) => {
     }, [hall])
 
 
-    return (
-        <div className="Auth-form-container">
+    return (<div className="Auth-form-container">
             <form onSubmit={handleSubmit(update ? hallUpdate : hallSubmit)} className="Auth-form">
                 <div className="Auth-form-content">
-                    <h3 className="Auth-form-title">{update? "Update the hall" : "Create a new hall"}</h3>
+                    <h3 className="Auth-form-title">{update ? "Update the hall" : "Create a new hall"}</h3>
                     <div className="form-group mt-sm-0">
                         <label>Name</label>
                         <TextField
@@ -157,44 +139,40 @@ export const HallForm = (props) => {
                             helperText={errors.details?.message}
                         />
                     </div>
-                    {update ?
-                        <div className="form-group mt-sm-0">
-                            <label>Status</label>
-                            <Select
-                                required
-                                id={"status"}
-                                type="text"
-                                value={status}
-                                onChange={e => setStatus(e.target.value)}
-                                className="form-control mt-sm-0"
-                                placeholder="Enter status"
-                                error={Boolean(errors.status?.message)}
-                                helperText={errors.status?.message}
-                            >
-                                <MenuItem value={"active"}>Active</MenuItem>
-                                <MenuItem value={"inactive"}>Inactive</MenuItem>
-                            </Select>
-                        </div> : ""}
+                    {update ? <div className="form-group mt-sm-0">
+                        <label>Status</label>
+                        <Select
+                            required
+                            id={"status"}
+                            type="text"
+                            value={status}
+                            onChange={e => setStatus(e.target.value)}
+                            className="form-control mt-sm-0"
+                            placeholder="Enter status"
+                            error={Boolean(errors.status?.message)}
+                            helperText={errors.status?.message}
+                        >
+                            <MenuItem value={"active"}>Active</MenuItem>
+                            <MenuItem value={"inactive"}>Inactive</MenuItem>
+                        </Select>
+                    </div> : ""}
 
                     <div className="d-grid gap-2 mt-3">
                         <button type="submit" className="btn btn-primary">
                             Submit
                         </button>
                     </div>
-                    {update ?
-                        <div className="d-grid gap-2 mt-3">
-                            <button type={"button"} onClick={() => {
-                                props.cancelling("")
-                            }} className="btn btn-secondary">
-                                {"Cancel"}
-                            </button>
-                        </div> : ""
-                    }
+                    {update ? <div className="d-grid gap-2 mt-3">
+                        <button type={"button"} onClick={() => {
+                            props.cancelling("")
+                        }} className="btn btn-secondary">
+                            {"Cancel"}
+                        </button>
+                    </div> : ""}
                     <div className=" forgot-password text-right mt-2" style={{color: 'red'}}>
                         {errorMsg}
                     </div>
                 </div>
             </form>
-        </div>
-    )
+        </div>)
 };

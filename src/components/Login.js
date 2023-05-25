@@ -6,7 +6,7 @@ import {useForm} from "react-hook-form"
 import TextField from "@mui/material/TextField";
 import {Navigate} from 'react-router-dom';
 import {useLocation} from "react-router-dom";
-import {genSaltSync, hashSync} from "bcryptjs"
+
 
 
 export const Login = (props) => {
@@ -15,22 +15,19 @@ export const Login = (props) => {
         const updatePassword = props.updatePassword;
         const msg = location.state === null ? "" : location.state.msg
         const [errorMsg, setErrorMsg] = useState("")
-        const [auth, setAuth] = useState(false)
         const [email, setEmail] = useState("")
         const [password, setPassword] = useState("")
-        const [updatePass, setUpdatePass] = useState(false)
-        const salt =  genSaltSync(10)
 
         const {handleSubmit, setError, formState: {errors, isValid}} = useForm()
 
         const login = () => {
             try {
-                instance.post('/login', {
+                instance.post('/user/login', {
                     email: email,
                     password: password
                 }).then(res => {
                     window.localStorage.setItem("token", res.data.token)
-                    setAuth(true);
+                    navigation('/profile')
                 }).catch(error => {
                     if (error.response.status === 400) {
                         const msg = error.response.data[0];
@@ -48,12 +45,15 @@ export const Login = (props) => {
         }
 
         const changePassword = () => {
-            const passwordHashed = hashSync(password, salt)
             try {
-                instance.patch('/me/updatePassword', {
-                    password: passwordHashed,
+                instance.put('/user/me/updatePassword', {
+                    password: password,
                 }).then(res => {
-                    setUpdatePass(true)
+                    navigation('/profile', {
+                        state: {
+                            msg: "Your password changed",
+                        }
+                    });
                 }).catch(error => {
                     if (error.response.status === 400) {
                         const msg = error.response.data[0];
@@ -70,18 +70,6 @@ export const Login = (props) => {
             }
         }
 
-
-        if (auth) {
-            navigation('/profile')
-        }
-
-        if (updatePass) {
-            navigation('/profile', {
-                state: {
-                    msg: "Your password changed",
-                }
-            });
-        }
 
         return (
             <div>
