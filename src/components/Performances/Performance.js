@@ -1,16 +1,18 @@
 import {instance, url} from "../../axios";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
+import {Link, useNavigate} from "react-router-dom";
+import {useNavigation} from "react-router";
 
 String.prototype.trimLenFrom = function (start, length) {
     return this.length > length ? this.substring(start, length) : this;
 }
 
 export const Performance = (props) => {
+    const navigation = useNavigate()
     const schedule = props.schedule
+    const buying = props.buying
     const performance = props.performance
-    const [show, setShow] = useState("")
-    const [hall, setHall] = useState("")
-    const [data, setData] = useState("")
+    const admin = props.admin
 
     const onDelete = () => {
         if (window.confirm("Are you sure you want to delete this performance?")) {
@@ -29,48 +31,13 @@ export const Performance = (props) => {
     }
 
 
-    const getHall = () => {
-        try {
-            instance.get(`/hall/${performance.hall}`).then(res => {
-                setHall(res.data)
-            })
-                .catch(error => {
-                    console.log(error.response.data.message);
-                })
-        } catch
-            (error) {
-            if (error.response) {
-                console.log(error.response.data.message);
-            }
-        }
-    }
 
-    const getShow = () => {
-        try {
-            instance.get(`/show/${performance.show}`).then(res => {
-                setShow(res.data)
-            })
-                .catch(error => {
-                    console.log(error.response.data.message);
-                })
-        } catch
-            (error) {
-            if (error.response) {
-                console.log(error.response.data.message);
-            }
-        }
-    }
-
-    useEffect(() => {
-        getHall()
-        getShow()
-    }, [data])
 
     return (
         <div className="Auth-form-container">
             <form className="form">
                 <div className="Auth-form-content">
-                    <h3 className="Auth-form-title"> {performance.name}</h3>
+                    <h3 className="Auth-form-title"> {performance.show.name}</h3>
                     <div className="form-group mt-3">
                     </div>
                     <div className="form-group mt-3">
@@ -79,31 +46,45 @@ export const Performance = (props) => {
                                  style={{borderRadius: "5%", width: "300px", height: "300px", objectFit: "cover"}}/>
                         </div>
                         <div className={"d-flex justify-content-center"}>
-                            <p style={{marginTop: "20px"}}> Author: {show.author} </p>
+                            <p style={{marginTop: "20px"}}> Author: {performance.show.author} </p>
                         </div>
+                        { performance.performanceTime ?
                         <div className={"d-flex justify-content-center"}>
                             <p style={{marginTop: "20px"}}> Performance starting time: {performance.performanceTime.trimLenFrom(0, 10)} {performance.performanceTime.trimLenFrom(11, 16)} </p>
-                        </div>
-                        <div className={"d-flex justify-content-center"}>
-                            <p> Hall: {hall.name} </p>
-                        </div>
-                        { show.duration ?
-                        <div className={"d-flex justify-content-center"}>
-                            <p> Duration: {show.duration.trimLenFrom(11, 16)} </p>
                         </div> : ""}
                         <div className={"d-flex justify-content-center"}>
-                            <p> Details: {show.details} </p>
+                            <p> Hall: {performance.hall.name} </p>
+                        </div>
+                        { performance.show.duration ?
+                        <div className={"d-flex justify-content-center"}>
+                            <p> Duration: {performance.show.duration.trimLenFrom(11, 16)} </p>
+                        </div> : ""}
+                        <div className={"d-flex justify-content-center"}>
+                            <p> Details: {performance.show.details} </p>
                         </div>
                         <div className={"d-flex justify-content-center"}>
-                            <p> Description: {show.description} </p>
+                            <p> Description: {performance.show.description} </p>
                         </div>
                     </div>
                 </div>
-                { !schedule ?
+                { !schedule && !admin ?
                 <div className={"d-flex justify-content-center"}>
-                    <button onClick={onDelete} className="btn btn-danger">
+                    <Link to={`/all-tickets/${performance._id}`} style={{marginRight: "10px"}} className="btn btn-primary">
+                        {`Check tickets`}
+                    </Link>
+                    <Link to={`/workers/${performance._id}`} style={{marginRight: "10px"}} className="btn btn-primary">
+                        {`Check workers`}
+                    </Link>
+                    <button onClick={() => {onDelete()
+                        navigation("/profile")}} className="btn btn-danger">
                         {`Delete performance`}
-                    </button></div> : "" }
+                    </button>
+                   </div> : "" }
+                { buying ?
+                    <div className={"d-flex justify-content-center"}>
+                        <Link to={`/tickets/${performance._id}`} style={{marginRight: "10px"}} className="btn btn-primary">
+                            {"Buy tickets"}
+                        </Link> </div> : "" }
             </form>
         </div>
     )

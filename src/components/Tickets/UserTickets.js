@@ -6,12 +6,12 @@ String.prototype.trimLenFrom = function (start, length) {
     return this.length > length ? this.substring(start, length) : this;
 }
 
-export const Basket = () => {
+export const UserTickets = () => {
     const [tickets, setTickets] = useState([])
 
     const getTickets = () => {
         try {
-            instance.get(`/ticket/basket`).then(res => {
+            instance.get(`/ticket/bought`).then(res => {
                 setTickets(res.data)
             })
                 .catch(error => {
@@ -26,22 +26,20 @@ export const Basket = () => {
     }
 
 
-
     useEffect(() => {
         getTickets()
     }, [])
 
-
     return (
         <div>
             <div className={"d-flex justify-content-center"}>
-                <h6> {"My basket"}</h6>
+                <h6> {"My tickets"}</h6>
             </div>
             <div className={"d-flex justify-content-center"}>
                 <div className={"gallery"}>
                     {
                         tickets ?
-                        tickets.map((t) => <Ticket basket={true} deleting={(() => getTickets())} key={t._id} ticket={t}/>) : ""}
+                            tickets.map((t) => <Ticket basket={true} archives={true}  key={t._id} ticket={t}/>) : ""}
                 </div>
             </div>
         </div>

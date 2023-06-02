@@ -4,7 +4,8 @@ import {instance} from "../../axios";
 import {ShowForm} from "./ShowForm";
 import {Show} from "./Show";
 
-export const ShowsGallery = () => {
+export const ShowsGallery = (props) => {
+    const schedule = props.schedule
     const [shows, setShows] = useState([])
     const [updateId, setUpdateId] = useState("")
     const location = useLocation();
@@ -35,9 +36,10 @@ export const ShowsGallery = () => {
     return (
         <div>
             <div className={"d-flex justify-content-center"}>
-                <Link to="/show-create" style={{marginTop: "50px"}} className="btn btn-primary btn-lg ">
+                {!schedule ?
+                    <Link to="/show-create" style={{marginTop: "50px"}} className="btn btn-primary btn-lg ">
                     {"Add show"}
-                </Link>
+                </Link> : ""}
             </div>
             <div className={"d-flex justify-content-center"}>
                 <h6> {msg}</h6>
@@ -50,7 +52,7 @@ export const ShowsGallery = () => {
                                     <ShowForm cancelling={() => {
                                         setUpdateId("")
                                     }} show={s} key={s._id} update={true}/> :
-                                    <Show updating={(id) => {
+                                    <Show schedule={schedule} updating={(id) => {
                                         setUpdateId(id)
                                     }} show={s} key={s._id}/>
                             )) : ""}

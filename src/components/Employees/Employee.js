@@ -80,7 +80,7 @@ export const Employee = (props) => {
                             setStatus("active")
                         }
                     }} className={"btn btn-danger"} ref={buttonRef}>
-                        `Make {employee.firstName} {employee.lastName} {employee.status === `active` ? `inactive` : `active`}
+                        Make {employee.firstName} {employee.lastName} {employee.status === `active` ? `inactive` : `active`}
                     </button>
                 </div>
                 <div className=" forgot-password text-right mt-2" style={{color: 'red'}}>

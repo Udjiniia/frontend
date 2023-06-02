@@ -7,7 +7,7 @@ import {useNavigate} from 'react-router-dom';
 import Select from "@mui/material/Select";
 import {MenuItem} from "@mui/material";
 import {HallSlot} from "../Schedules/HallSlot";
-import {SessionForm} from "./SessionForm";
+import {SessionForm} from "../Schedules/SessionForm";
 import {wait} from "@testing-library/user-event/dist/utils";
 
 String.prototype.trimPart = function (start, length) {
@@ -16,13 +16,15 @@ String.prototype.trimPart = function (start, length) {
 
 export const PerformanceChoose = (props) => {
         const navigation = useNavigate()
-        const [errorMsg, setErrorMsg] = useState("")
+        let now = new Date()
+        now = now.toISOString().split('T')[0]
+         const [errorMsg, setErrorMsg] = useState("")
         const [timeFull, setTimeFull] = useState("2023-05-01T00:00:00.000+00:00")
         const [hall, setHall] = useState("")
         const [show, setShow] = useState("")
         const [performanceAvatarUrl, setPerformanceAvatarUrl] = useState("/uploads/show.jpg")
         const [time, setDuration] = useState(timeFull.trimPart(11, 16))
-        const [date, setDate] = useState(timeFull.trimPart(0, 10))
+        const [date, setDate] = useState(now)
         const [dateFull, setDateFull] = useState("2000-01-01T00:00:00.000+00:00")
         const [details, setDetails] = useState("")
         const [interval, setInterval] = useState("10")
@@ -122,7 +124,6 @@ export const PerformanceChoose = (props) => {
             try {
                 instance.get(`/employee/workers/active`).then(res => {
                     setWorkers(res.data)
-                    // setSessions(workers)
                 })
                     .catch(error => {
                         console.log(error.response.data.message);
@@ -201,9 +202,6 @@ export const PerformanceChoose = (props) => {
         }, [hall])
 
 
-
-
-
         function changePrices(index, price) {
             const newArr = [...prices]
             newArr[index - 1] = price;
@@ -242,7 +240,7 @@ export const PerformanceChoose = (props) => {
         return (
             <div>
                 <div className="Auth-form-container">
-                    <form onSubmit={handleSubmit( performanceSubmit)} className="form">
+                    <form onSubmit={handleSubmit(performanceSubmit)} className="form">
                         <div className="Auth-form-content">
                             <h3 className="Auth-form-title">{"Create a new performance"}</h3>
                             <div className="form-group mt-sm-0">
@@ -399,21 +397,21 @@ export const PerformanceChoose = (props) => {
                                     </> : ""
                                     }
                                     <div>
-                                    {hall && rows ? rows.map((r) =>
-                                        <div className="form-group mt-sm-0">
-                                            <label>Row {r} price</label>
-                                            <TextField
-                                                required
-                                                id={`price${r}`}
-                                                type="number"
-                                                value={prices[r - 1]}
-                                                onChange={e => changePrices(r, e.target.value)}
-                                                className="form-control mt-sm-0"
-                                                placeholder={`Enter row ${r} price`}
-                                            />
-                                        </div>
-                                    ) : ""
-                                    }
+                                        {hall && rows ? rows.map((r) =>
+                                            <div className="form-group mt-sm-0">
+                                                <label>Row {r} price</label>
+                                                <TextField
+                                                    required
+                                                    id={`price${r}`}
+                                                    type="number"
+                                                    value={prices[r - 1]}
+                                                    onChange={e => changePrices(r, e.target.value)}
+                                                    className="form-control mt-sm-0"
+                                                    placeholder={`Enter row ${r} price`}
+                                                />
+                                            </div>
+                                        ) : ""
+                                        }
                                     </div>
                                     {hall && rows ?
                                         <div className="d-grid gap-2 mt-3">

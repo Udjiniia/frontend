@@ -7,6 +7,12 @@
   justify-content: center;
   align-items: center;
 }
+.Ticket-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+}
 
 .Auth-form {
   width: 420px;

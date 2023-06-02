@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import "bootstrap/dist/css/bootstrap.min.css"
-import {Link} from "react-router-dom"
 import {instance, url} from "../../axios.js";
 import {useForm} from "react-hook-form"
 import TextField from "@mui/material/TextField";
@@ -11,15 +10,14 @@ import {MenuItem} from "@mui/material";
 
 export const EmployeeForm = (props) => {
     const navigation = useNavigate()
-    const [errorMsg, setErrorMsg] = useState("")
-    const [registr, setRegistr] = useState(false)
-    const [role, setRole] = useState("")
-    const [firstName, setFirstName] = useState("")
-    const [phone, setPhone] = useState("")
-    const [lastName, setLastName] = useState("")
-    const [birthday, setBirthday] = useState("")
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
+    const [errorMsg, setErrorMsg] = useState()
+    const [role, setRole] = useState()
+    const [firstName, setFirstName] = useState()
+    const [phone, setPhone] = useState()
+    const [lastName, setLastName] = useState()
+    const [birthday, setBirthday] = useState()
+    const [email, setEmail] = useState()
+    const [password, setPassword] = useState()
     const [avatarUrl, setAvatarUrl] = useState("/uploads/anon.jpg")
     const inputFileRef = React.useRef(null);
 
@@ -42,7 +40,11 @@ export const EmployeeForm = (props) => {
                 birthday: birthday,
                 status: "active"
             }).then(res => {
-                setRegistr(true)
+                navigation('/employees', {
+                    state: {
+                        msg: `You have created new employee - ${firstName} ${lastName}`,
+                    }
+                });
             }).catch(error => {
                 if (error.response.status === 400) {
                     const msg = error.response.data[0];
@@ -76,13 +78,6 @@ export const EmployeeForm = (props) => {
     }
 
 
-    if (registr) {
-        navigation('/employees', {
-            state: {
-                msg: `You have created new employee - ${firstName} ${lastName}`,
-            }
-        });
-    }
 
 
     return (

@@ -12,6 +12,7 @@ export const HallSlot = (props) => {
         props.hall(hall)
         props.time(slotTime)
     }
+
     return (
         <div className="Auth-form-container">
             <form className="Auth-form">

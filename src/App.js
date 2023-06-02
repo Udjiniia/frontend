@@ -19,6 +19,11 @@ import {PerformanceChoose} from "./components/Performances/PerformanceChoose";
 import {PerformancesGallery} from "./components/Performances/PerfomancesGallery";
 import {Main} from "./components/Main"
 import {EmployeesSchedule} from "./components/Employees/EmployeeSchedule";
+import {Tickets} from "./components/Tickets/Tickets";
+import {Basket} from "./components/Tickets/Basket";
+import {UserTickets} from "./components/Tickets/UserTickets";
+import {PerformanceTickets} from "./components/Tickets/PerformanceTickets"
+import {PerformanceSession} from "./components/Schedules/PerformanceSessions";
 
 function App() {
     const [role, setRole] = useState('');
@@ -28,13 +33,18 @@ function App() {
 
 
     return (<Routes>
-        <Route path="/" element={<Main/>}/>
+        <Route path="/" element={
+            <PublicRoute>
+            <Main/>
+            </PublicRoute>}/>
         <Route path="/register" element={<PublicRoute>
+            <Header state={"public"} role={""}/>
             < Registration signUp={true}/>
         </PublicRoute>}/>
         <Route
             path="/login"
             element={<PublicRoute>
+                <Header state={"public"} role={""}/>
                 <Login updatePassword={false}/>
             </PublicRoute>}
         />
@@ -48,7 +58,7 @@ function App() {
         <Route
             path="/update-password"
             element={<PrivateRoute>
-                <Header state={"main"} />
+                <Header state={"main"}/>
                 <Login updatePassword={true}/>
             </PrivateRoute>}
         />
@@ -71,8 +81,8 @@ function App() {
         <Route
             path="/hall-create"
             element={<PrivateRoute>
-                    <Header state={"main"}/>
-                    <HallForm update={false}/>
+                <Header state={"main"}/>
+                <HallForm update={false}/>
             </PrivateRoute>}
         />
         <Route
@@ -96,7 +106,7 @@ function App() {
             element={<PrivateRoute>
                 <AdministrationRoute>
                     <Header state={"main"} role={role}/>
-                    <ShowsGallery/>
+                    <ShowsGallery schedule={false}/>
                 </AdministrationRoute>
             </PrivateRoute>}
         />
@@ -114,7 +124,7 @@ function App() {
             element={<PrivateRoute>
                 <AdministrationRoute>
                     <Header state={"main"} role={role}/>
-                    <PerformancesGallery/>
+                    <PerformancesGallery buying={false} schedule={false}/>
                 </AdministrationRoute>
             </PrivateRoute>}
         />
@@ -128,6 +138,15 @@ function App() {
             </PrivateRoute>}
         />
         <Route
+            path="/all-tickets/:id"
+            element={<PrivateRoute>
+                <AdministrationRoute>
+                    <Header state={"main"} role={role}/>
+                    <PerformanceTickets/>
+                </AdministrationRoute>
+            </PrivateRoute>}
+        />
+        <Route
             path="/my-schedule"
             element={<PrivateRoute>
                 <WorkerRoute>
@@ -135,6 +154,54 @@ function App() {
                     <EmployeesSchedule/>
                 </WorkerRoute>
             </PrivateRoute>}
+        />
+        <Route
+            path="/schedule"
+            element={<>
+                <Header state={"public"} role={""}/>
+                <PerformancesGallery buying={false} schedule={true}/>
+            </>}
+        />
+        <Route
+            path="/schedule-tickets"
+            element={<PrivateRoute>
+                <Header state={"main"} role={role}/>
+                <PerformancesGallery buying={true} schedule={true}/>
+            </PrivateRoute>}
+        />
+        <Route
+            path="/tickets/:id"
+            element={<PrivateRoute>
+                <Header state={"main"} role={role}/>
+                <Tickets/>
+            </PrivateRoute>}
+        />
+        <Route
+            path="/workers/:id"
+            element={<PrivateRoute>
+                <Header state={"main"} role={role}/>
+                <PerformanceSession/>
+            </PrivateRoute>}
+        />
+        <Route
+            path="/basket"
+            element={<PrivateRoute>
+                <Header state={"main"} role={role}/>
+                <Basket/>
+            </PrivateRoute>}
+        />
+        <Route
+            path="/tickets"
+            element={<PrivateRoute>
+                <Header state={"main"} role={role}/>
+                <UserTickets/>
+            </PrivateRoute>}
+        />
+        <Route
+            path="/posters"
+            element={<>
+                    <Header state={"public"} role={""}/>
+                    <ShowsGallery schedule={true}/></>}
         />
     </Routes>);
 }

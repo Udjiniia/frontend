@@ -1,20 +1,19 @@
 import React, {useState} from "react";
 import {instance, url} from "../axios.js";
-import TextField from "@mui/material/TextField";
-import {Link, Navigate, useLocation} from "react-router-dom";
+import { useLocation, useNavigate} from "react-router-dom";
 
 
 export const Home = (props) => {
+    const navigation = useNavigate()
     const location = useLocation();
     const msg = location.state === null ? "" : location.state.msg
-    const [birthday, setBirthday] = useState("")
-    const [firstName, setFirstName] = useState("")
-    const [phone, setPhone] = useState("")
-    const [lastName, setLastName] = useState("")
-    const [email, setEmail] = useState("")
-    const [avatarUrl, setAvatarUrl] = useState("")
-    const [auth, setAuth] = useState(true)
-    const [role, setRole] = useState("user")
+    const [birthday, setBirthday] = useState()
+    const [firstName, setFirstName] = useState()
+    const [phone, setPhone] = useState()
+    const [lastName, setLastName] = useState()
+    const [email, setEmail] = useState()
+    const [avatarUrl, setAvatarUrl] = useState()
+    const [role, setRole] = useState()
 
     String.prototype.trimLen = function (length) {
         return this.length > length ? this.substring(0, length) : this;
@@ -43,7 +42,7 @@ export const Home = (props) => {
 
     const onLogout = () => {
         window.localStorage.setItem("token", "")
-        setAuth(false);
+        navigation('/login');
     }
 
     const onDelete = () => {
@@ -64,9 +63,6 @@ export const Home = (props) => {
         }
     }
 
-    if (!auth) {
-        return <Navigate to="/"/>
-    }
 
 
 
@@ -90,9 +86,10 @@ export const Home = (props) => {
                         <div className={"d-flex justify-content-center"}>
                             <p> Телефон: {phone} </p>
                         </div>
+                        {birthday ?
                         <div className={"d-flex justify-content-center"}>
                             <p>Birthday: {birthday.trimLen(10)} </p>
-                        </div>
+                        </div> : ""}
                         <div className={"d-flex justify-content-center"}>
                             <p> Пошта: {email} </p>
                         </div>
@@ -103,11 +100,12 @@ export const Home = (props) => {
                         {"Log out"}
                     </button>
                 </div>
+                {(role !== "head" && role !== "admin") ?
                 <div className={"d-flex justify-content-center"}>
                     <button onClick={onDelete} className="btn btn-secondary">
                         {"Delete account"}
                     </button>
-                </div>
+                </div> : ""}
             </form>
         </div>
     )

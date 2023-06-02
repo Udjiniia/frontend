@@ -4,9 +4,7 @@ import {Link, useNavigate} from "react-router-dom"
 import {instance} from "../axios.js";
 import {useForm} from "react-hook-form"
 import TextField from "@mui/material/TextField";
-import {Navigate} from 'react-router-dom';
 import {useLocation} from "react-router-dom";
-
 
 
 export const Login = (props) => {
@@ -18,7 +16,7 @@ export const Login = (props) => {
         const [email, setEmail] = useState("")
         const [password, setPassword] = useState("")
 
-        const {handleSubmit, setError, formState: {errors, isValid}} = useForm()
+        const {handleSubmit, formState: {errors}} = useForm()
 
         const login = () => {
             try {
@@ -46,7 +44,7 @@ export const Login = (props) => {
 
         const changePassword = () => {
             try {
-                instance.put('/user/me/updatePassword', {
+                instance.patch('/user/me/updatePassword', {
                     password: password,
                 }).then(res => {
                     navigation('/profile', {
@@ -78,7 +76,7 @@ export const Login = (props) => {
                 <div className="Auth-form-container">
                     <form onSubmit={handleSubmit(updatePassword ? changePassword : login)} className="Auth-form">
                         <div className="Auth-form-content">
-                            <h3 className="Auth-form-title">{updatePassword ? "Введіть новий пароль" : "Вхід"}</h3>
+                            <h3 className="Auth-form-title">{updatePassword ? "Enter new password" : "Sign in"}</h3>
                             {updatePassword ? "" :
                                 <div className="form-group mt-3">
                                     <label>Email address</label>
@@ -114,8 +112,9 @@ export const Login = (props) => {
                             <div className="forgot-password text-right mt-2" style={{color: 'red'}}>
                                 {errorMsg}
                             </div>
-                            {updatePassword ? "" : <p className="forgot-password text-right mt-2"> Немає акаунту? <Link
-                                to={"/register"}> Зареєструватись </Link></p>}
+                            {updatePassword ? "" :
+                                <p className="forgot-password text-right mt-2"> Don`t have an account? <Link
+                                    to={"/register"}> Sign up </Link></p>}
                         </div>
                     </form>
                 </div>

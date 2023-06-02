@@ -6,7 +6,7 @@ String.prototype.trimLenFrom = function (start, length) {
 }
 export const Show = (props) => {
     const show = props.show
-    const [creator, setCreator] = useState("")
+    const schedule = props.schedule
 
     const onDelete = () => {
         if (window.confirm("Are you sure you want to delete this show?")) {
@@ -24,19 +24,7 @@ export const Show = (props) => {
         }
     }
 
-    try {
-        instance.get(`/user/${show.creator}`).then(res => {
-            setCreator(` ${res.data.firstName} ${res.data.lastName}`)
-        })
-            .catch(error => {
-                console.log(error.response.data.message);
-            })
-    } catch
-        (error) {
-        if (error.response) {
-            console.log(error.response.data.message);
-        }
-    }
+
 
 
     return (
@@ -63,11 +51,14 @@ export const Show = (props) => {
                         <div className={"d-flex justify-content-center"}>
                             <p> Description: {show.description} </p>
                         </div>
+                        {!schedule ?
                         <div className={"d-flex justify-content-center"}>
-                            <p> Creator: {creator} </p>
-                        </div>
+                            <p> Creator: {show.creator.firstName} {show.creator.lastName} </p>
+                        </div> : ""}
                     </div>
                 </div>
+                {!schedule ?
+                    <>
                 <div className={"d-flex justify-content-center"} style={{marginBottom: "8px"}}>
                     <button onClick={() => {
                         props.updating(show._id)
@@ -80,6 +71,7 @@ export const Show = (props) => {
                         {`Delete ${show.name}`}
                     </button>
                 </div>
+                    </> : ""}
             </form>
         </div>
     )

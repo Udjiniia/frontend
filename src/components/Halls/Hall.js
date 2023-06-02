@@ -51,7 +51,7 @@ export const Hall = (props) => {
                     </button>
                 </div>
                 <div className={"d-flex justify-content-center"}>
-                    <button onClick={onDelete} className="btn btn-danger">
+                <button onClick={onDelete} className={"btn btn-danger"} >
                         {`Delete ${hall.name}`}
                     </button>
                 </div>

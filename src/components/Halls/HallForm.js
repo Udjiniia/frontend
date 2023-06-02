@@ -49,7 +49,7 @@ export const HallForm = (props) => {
 
     const hallUpdate = () => {
         try {
-            instance.patch(`/hall/update/${hall._id}`, {
+            instance.put(`/hall/update/${hall._id}`, {
                 name: name, capacity: capacity, rows: rows, details: details, status: status
             }).then(res => {
                 props.cancelling("")

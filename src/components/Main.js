@@ -8,8 +8,11 @@ export const Main = () => {
                 <h6> Welcome!</h6>
             </div>
             <div className={"d-flex justify-content-center"}>
-                <Link to="/schedule" style={{marginTop: "150px"}} className="btn btn-primary btn-lg ">
+                <Link to="/schedule" style={{marginTop: "110px", marginRight: "20px"}} className="btn btn-primary btn-lg ">
                     {"Schedule"}
+                </Link>
+                <Link to="/posters" style={{marginTop: "110px"}} className="btn btn-warning btn-lg ">
+                    {"Shows"}
                 </Link>
             </div>
             <div className={"d-flex justify-content-center"}>

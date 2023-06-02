@@ -4,11 +4,12 @@ import {instance} from "../../axios";
 import {PerformanceChoose} from "./PerformanceChoose";
 import {Performance} from "./Performance";
 
-export const PerformancesGallery = () => {
+export const PerformancesGallery = (props) => {
+    const schedule = props.schedule
+    const buying = props.buying
     const location = useLocation();
     const msg = location.state === null ? "" : location.state.msg
     const [performances, setPerformances] = useState([])
-    const [data, setData] = useState("")
 
     const getPerformances = () => {
         try {
@@ -29,15 +30,16 @@ export const PerformancesGallery = () => {
 
     useEffect(() => {
         getPerformances()
-    }, [data])
+    }, [])
 
 
     return (
         <div>
             <div className={"d-flex justify-content-center"}>
+                {!schedule ?
                 <Link to="/performance-create" style={{marginTop: "50px"}} className="btn btn-primary btn-lg ">
                     {"Add performance"}
-                </Link>
+                </Link> : ""}
             </div>
             <div className={"d-flex justify-content-center"}>
                 <h6> {msg}</h6>
@@ -47,7 +49,7 @@ export const PerformancesGallery = () => {
                     {
                         performances ?
                             performances.map((p) => (
-                                    <Performance  schedule={false} performance={p} key={p._id}/>
+                                    <Performance buying={buying} schedule={schedule} performance={p} key={p._id}/>
                             )) : ""}
                 </div>
             </div>

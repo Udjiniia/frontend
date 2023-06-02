@@ -21,7 +21,7 @@ export const Registration = (props) => {
     const inputFileRef = useRef(null);
 
 
-    const {handleSubmit, formState: {errors, isValid}} = useForm({})
+    const {handleSubmit, formState: {errors}} = useForm({})
 
     String.prototype.trimLen = function (length) {
         return this.length > length ? this.substring(0, length)  : this;

@@ -1,25 +1,19 @@
-import {Link, useLocation} from "react-router-dom"
 import React, {useState, useEffect} from "react";
 import {instance} from "../../axios";
-import {Employee} from "./Employee";
 import TextField from "@mui/material/TextField";
 import {useForm} from "react-hook-form";
+import {WorkSession} from "./WorkSession";
 
 String.prototype.replaceAt = function (index, replacement) {
     return this.substring(0, index) + replacement + this.substring(index + replacement.length);
 }
 
-export const EmployeesSchedule = () => {
-    const current = new Date();
+export const EmployeesSchedule = () => {;
     const [schedule, setSchedule] = useState([])
     const [dateFull, setDateFull] = useState("2023-05-01T00:00:00.000+00:00")
-    let dateNow = ""
-    if (current.getMonth() <= 9) {
-        dateNow = `${current.getFullYear()}-0${current.getMonth() + 1}-${current.getDate()}`
-    } else {
-        dateNow = `${current.getFullYear()}-${current.getMonth() + 1}-${current.getDate()}`
-    }
-    const [date, setDate] = useState(dateNow)
+    let now = new Date()
+    now = now.toISOString().split('T')[0]
+    const [date, setDate] = useState(now)
 
 
     const {handleSubmit, formState: {errors}} = useForm({})
@@ -57,7 +51,7 @@ export const EmployeesSchedule = () => {
             <div className="Auth-form-container">
                 <form onSubmit={handleSubmit(() => {getSchedule()})} className="form">
                     <div className="Auth-form-content">
-                        <h3 className="Auth-form-title">{"Create a new performance"}</h3>
+                        <h3 className="Auth-form-title">{"Choose a date"}</h3>
                         <div className="form-group mt-sm-0">
                             <label>Date</label>
                             <TextField
@@ -74,11 +68,19 @@ export const EmployeesSchedule = () => {
                         </div>
                         <div className={"d-flex justify-content-center"}>
                             <button type={"submit"} style={{marginTop: "50px"}} className="btn btn-primary btn-lg ">
-                                {"Add employee"}
+                                {"Get schedule"}
                             </button>
                         </div>
                     </div>
                 </form>
+            </div>
+            <div className={"d-flex justify-content-center"}>
+                <div className={"gallery"}>
+                    {
+                        schedule ?
+                            schedule.map((s) =>
+                                <WorkSession key={s.performance._id} performance={s}/>) : ""}
+                </div>
             </div>
         </div>
     )
