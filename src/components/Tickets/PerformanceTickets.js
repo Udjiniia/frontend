@@ -10,8 +10,9 @@ String.prototype.trimLenFrom = function (start, length) {
 
 export const PerformanceTickets = () => {
     const {id} = useParams();
-    const [tickets, setTickets] = useState([])
+    const [tickets, setTickets] = useState()
     const [performance, setPerformance] = useState()
+    const [data, setData] = useState(false)
 
     const getTickets = () => {
         try {
@@ -51,19 +52,29 @@ export const PerformanceTickets = () => {
         getPerformance()
     }, [])
 
+    useEffect(() => {
+        if (performance) {
+            setData(true)
+        }
+    }, [performance])
+
     return (
         <div>
-            <div className={"d-flex justify-content-center"}>
-                {performance ?
-                    <Performance admin={true} performance={performance}/> : ""}
-            </div>
-            <div className={"d-flex justify-content-center"}>
-                <div className={"gallery"}>
-                    {
-                        tickets ?
-                            tickets.map((t) => <Ticket admin={true} basket={false} key={t._id} ticket={t}/>) : ""}
-                </div>
-            </div>
+            {data ?
+                <div>
+                    <div className={"d-flex justify-content-center"}>
+                        {performance ?
+                            <Performance admin={true} performance={performance}/> : ""}
+                    </div>
+                    <div className={"d-flex justify-content-center"}>
+                        <div className={"gallery"}>
+                            {
+                                tickets ?
+                                    tickets.map((t) => <Ticket admin={true} basket={false} key={t._id}
+                                                               ticket={t}/>) : ""}
+                        </div>
+                    </div>
+                </div> : ""}
         </div>
     )
 }

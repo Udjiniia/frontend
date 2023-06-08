@@ -10,6 +10,9 @@ export const PerformancesGallery = (props) => {
     const location = useLocation();
     const msg = location.state === null ? "" : location.state.msg
     const [performances, setPerformances] = useState([])
+    const [data, setData] = useState(false)
+    const [errorMsg, setErrorMsg] = useState()
+
 
     const getPerformances = () => {
         try {
@@ -32,9 +35,26 @@ export const PerformancesGallery = (props) => {
         getPerformances()
     }, [])
 
+    useEffect(() => {
+        if (performances) {
+            if (performances.length === 0) {
+                setErrorMsg("Performances haven`t been created")
+            }
+            setData(true)
+        }
+    }, [performances])
+
 
     return (
         <div>
+            {data ?
+        <div>
+            <div className={"d-flex justify-content-center"}>
+                <h4> {"Performances"}</h4>
+            </div>
+            <div className={"d-flex justify-content-center"}>
+                {errorMsg ? <h6> {errorMsg}</h6> : ""}
+            </div>
             <div className={"d-flex justify-content-center"}>
                 {!schedule ?
                 <Link to="/performance-create" style={{marginTop: "50px"}} className="btn btn-primary btn-lg ">
@@ -53,6 +73,7 @@ export const PerformancesGallery = (props) => {
                             )) : ""}
                 </div>
             </div>
+        </div> : ""}
         </div>
     )
 }

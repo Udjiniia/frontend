@@ -8,6 +8,8 @@ String.prototype.trimLenFrom = function (start, length) {
 
 export const Basket = () => {
     const [tickets, setTickets] = useState([])
+    const [errorMsg, setErrorMsg] = useState()
+    const [data, setData] = useState(false)
 
     const getTickets = () => {
         try {
@@ -31,11 +33,24 @@ export const Basket = () => {
         getTickets()
     }, [])
 
+    useEffect(() => {
+        if (tickets) {
+            if (tickets.length === 0) {
+                setErrorMsg("Basket is empty")
+            }
+            setData(true)
+        }
+    }, [tickets])
 
     return (
         <div>
+        {data ?
+        <div>
             <div className={"d-flex justify-content-center"}>
-                <h6> {"My basket"}</h6>
+                <h4> {"My basket"}</h4>
+            </div>
+            <div className={"d-flex justify-content-center"}>
+                {errorMsg ? <h6> {errorMsg}</h6> : ""}
             </div>
             <div className={"d-flex justify-content-center"}>
                 <div className={"gallery"}>
@@ -44,6 +59,7 @@ export const Basket = () => {
                         tickets.map((t) => <Ticket basket={true} deleting={(() => getTickets())} key={t._id} ticket={t}/>) : ""}
                 </div>
             </div>
+        </div> : ""}
         </div>
     )
 }

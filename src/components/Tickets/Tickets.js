@@ -16,13 +16,13 @@ String.prototype.trimLenFrom = function (start, length) {
 export const Tickets = () => {
     const navigation = useNavigate()
     const {id} = useParams();
-    const [unBook, setUnbook] = useState("")
-    const [tickets, setTickets] = useState([])
+    const [tickets, setTickets] = useState()
     const [currentTicket, setCurrentTicket] = useState()
     const [deleteTicket, setDeleteTicket] = useState()
-    const [freeTickets, setFreeTickets] = useState([])
-    const [sum, setSum] = useState([])
+    const [freeTickets, setFreeTickets] = useState()
+    const [sum, setSum] = useState()
     const [performance, setPerformance] = useState()
+    const [data, setData] = useState(false)
 
     const {formState: {errors}} = useForm({})
 
@@ -162,7 +162,7 @@ export const Tickets = () => {
     useEffect(() => {
         unbookTickets()
         getPerformance()
-    }, [unBook])
+    }, [])
 
     useEffect(() => {
         if (currentTicket) {
@@ -182,8 +182,16 @@ export const Tickets = () => {
         }
     }, [deleteTicket])
 
+    useEffect(() => {
+        if (performance) {
+            setData(true)
+        }
+    }, [performance])
+
 
     return (
+        <div>
+            {data ?
         <div className="Auth-form-container">
             <form className="Auth-form">
                 <div className="Auth-form-content">
@@ -224,6 +232,7 @@ export const Tickets = () => {
             </form>
             {performance ?
             <Performance performance={performance}  buying={false} schedule={true}/> : ""}
+        </div> : ""}
         </div>
     )
 }

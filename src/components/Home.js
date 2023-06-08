@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {instance, url} from "../axios.js";
 import { useLocation, useNavigate} from "react-router-dom";
 
@@ -7,27 +7,17 @@ export const Home = (props) => {
     const navigation = useNavigate()
     const location = useLocation();
     const msg = location.state === null ? "" : location.state.msg
-    const [birthday, setBirthday] = useState()
-    const [firstName, setFirstName] = useState()
-    const [phone, setPhone] = useState()
-    const [lastName, setLastName] = useState()
-    const [email, setEmail] = useState()
-    const [avatarUrl, setAvatarUrl] = useState()
-    const [role, setRole] = useState()
+    const [user, setUser] = useState()
+    const [data, setData] = useState(false)
 
     String.prototype.trimLen = function (length) {
         return this.length > length ? this.substring(0, length) : this;
     }
 
+    useEffect(() => {
     try {
         instance.get("/user/me").then(res => {
-            setEmail(res.data.userData.email)
-            setBirthday(res.data.userData.birthday)
-            setFirstName(res.data.userData.firstName)
-            setLastName(res.data.userData.lastName)
-            setPhone(res.data.userData.phone)
-            setAvatarUrl(res.data.userData.avatarUrl)
-            setRole(res.data.userData.userRole)
+            setUser(res.data.userData)
             props.currentRole(res.data.userData.userRole)
         })
             .catch(error => {
@@ -38,7 +28,7 @@ export const Home = (props) => {
         if (error.response) {
             console.log(error.response.data.message);
         }
-    }
+    }},[])
 
     const onLogout = () => {
         window.localStorage.setItem("token", "")
@@ -63,35 +53,43 @@ export const Home = (props) => {
         }
     }
 
+    useEffect(() => {
+        if (user) {
+            setData(true)
+        }
+    }, [user])
+
+
 
 
 
     return (
+        <div>
+            { data ?
         <div className="Auth-form-container">
             <form className="Auth-form">
                 <div className="Auth-form-content">
                     <h6 className="Auth-form-title"> {msg}</h6>
-                    <h3 className="Auth-form-title"> Вітаю, {firstName}</h3>
+                    <h3 className="Auth-form-title"> Hello {user.firstName}</h3>
                     <div className="form-group mt-3">
                         <div className={"d-flex justify-content-center header"}>
-                            <img alt="Uploaded" src={`${url}${avatarUrl}`}
+                            <img alt="Uploaded" src={`${url}${user.avatarUrl}`}
                                  style={{borderRadius: "50%", width: "200px", height: "200px", objectFit: "cover"}}/>
                         </div>
                         <div className={"d-flex justify-content-center"}>
-                            <p style={{marginTop: "20px"}}> Ім'я: {firstName} </p>
+                            <p style={{marginTop: "20px"}}> Ім'я: {user.firstName} </p>
                         </div>
                         <div className={"d-flex justify-content-center"}>
-                            <p> Прізвище: {lastName} </p>
+                            <p> Прізвище: {user.lastName} </p>
                         </div>
                         <div className={"d-flex justify-content-center"}>
-                            <p> Телефон: {phone} </p>
+                            <p> Телефон: {user.phone} </p>
                         </div>
-                        {birthday ?
                         <div className={"d-flex justify-content-center"}>
-                            <p>Birthday: {birthday.trimLen(10)} </p>
-                        </div> : ""}
+                            <p>Birthday: {user.birthday.trimLen(10)} </p>
+                        </div>
                         <div className={"d-flex justify-content-center"}>
-                            <p> Пошта: {email} </p>
+                            <p> Пошта: {user.email} </p>
                         </div>
                     </div>
                 </div>
@@ -100,13 +98,14 @@ export const Home = (props) => {
                         {"Log out"}
                     </button>
                 </div>
-                {(role !== "head" && role !== "admin") ?
+                {(user.role !== "head" && user.role !== "admin") ?
                 <div className={"d-flex justify-content-center"}>
                     <button onClick={onDelete} className="btn btn-secondary">
                         {"Delete account"}
                     </button>
                 </div> : ""}
             </form>
+        </div> : ""}
         </div>
     )
 };

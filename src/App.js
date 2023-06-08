@@ -24,6 +24,7 @@ import {Basket} from "./components/Tickets/Basket";
 import {UserTickets} from "./components/Tickets/UserTickets";
 import {PerformanceTickets} from "./components/Tickets/PerformanceTickets"
 import {PerformanceSession} from "./components/Schedules/PerformanceSessions";
+import {PerformanceReplace} from "./components/Performances/PerformanceReplace";
 
 function App() {
     const [role, setRole] = useState('');
@@ -81,8 +82,10 @@ function App() {
         <Route
             path="/hall-create"
             element={<PrivateRoute>
+                <HeadRoute>
                 <Header state={"main"}/>
                 <HallForm update={false}/>
+                </HeadRoute>
             </PrivateRoute>}
         />
         <Route
@@ -97,8 +100,10 @@ function App() {
         <Route
             path="/employee-create"
             element={<PrivateRoute>
+                <HeadRoute>
                 <Header state={"main"}/>
                 <EmployeeForm/>
+                </HeadRoute>
             </PrivateRoute>}
         />
         <Route
@@ -138,6 +143,15 @@ function App() {
             </PrivateRoute>}
         />
         <Route
+            path="/performance-reschedule/:id"
+            element={<PrivateRoute>
+                <AdministrationRoute>
+                    <Header state={"main"} role={role}/>
+                    <PerformanceReplace buying={false} schedule={true}/>
+                </AdministrationRoute>
+            </PrivateRoute>}
+        />
+        <Route
             path="/all-tickets/:id"
             element={<PrivateRoute>
                 <AdministrationRoute>
@@ -153,6 +167,15 @@ function App() {
                     <Header state={"main"} role={role}/>
                     <EmployeesSchedule/>
                 </WorkerRoute>
+            </PrivateRoute>}
+        />
+        <Route
+            path="/employee-schedule/:id"
+            element={<PrivateRoute>
+                <HeadRoute>
+                    <Header state={"main"} role={role}/>
+                    <EmployeesSchedule/>
+                </HeadRoute>
             </PrivateRoute>}
         />
         <Route

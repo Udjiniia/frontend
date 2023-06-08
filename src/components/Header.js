@@ -11,11 +11,25 @@ export const Header = (props) => {
 
         <div className="position-relative" style={{marginTop: "10px"}}>
             <div className="position-absolute top-0 end-0">
-                {role === "user" && state === "profile" ?
-                    <>
-                        <Link to="/schedule-tickets" style={{marginRight: "10px"}} className="btn btn-outline-primary">
-                            {"Buy tickets"}
+                {role === "head" ? <>{state === "profile" ?
+                    <><Link to="/halls" style={{marginRight: "10px"}}
+                            className="btn btn-outline-primary">
+                        {"Halls"}
+                    </Link>
+                        <Link to="/employees" style={{marginRight: "10px"}} className="btn btn-outline-primary">
+                            {"Employees"}
                         </Link>
+                        <Link to="/shows" style={{marginRight: "10px"}} className="btn btn-outline-primary">
+                            {"Shows"}
+                        </Link>
+                        <Link to="/performances" style={{marginRight: "10px"}} className="btn btn-outline-primary">
+                            {"Performances"}
+                        </Link>
+                    </> : ""}</> : ""}
+                {role === "user" ? <>{state === "profile" ?
+                    <>   <Link to="/schedule-tickets" style={{marginRight: "10px"}} className="btn btn-outline-primary">
+                        {"Buy tickets"}
+                    </Link>
                         <Link to="/posters" style={{marginRight: "10px"}} className="btn btn-outline-primary">
                             {"Shows list"}
                         </Link>
@@ -24,17 +38,9 @@ export const Header = (props) => {
                         </Link>
                         <Link to="/tickets" style={{marginRight: "10px"}} className="btn btn-outline-primary">
                             {"My tickets"}
-                        </Link> </>
-                    : ""}
-                {role === "head" && state === "profile" ?
-                    <><Link to="/halls" style={{marginRight: "10px"}} className="btn btn-outline-primary">
-                        {"Halls"}
-                    </Link>
-                        <Link to="/employees" style={{marginRight: "10px"}} className="btn btn-outline-primary">
-                            {"Employees"}
                         </Link>
-                    </> : ""}
-                {role === "admin" || "head" && state === "profile" && role !== "worker" && role !== "user" ?
+                    </> : ""}</> : ""}
+                {role === "admin" && state === "profile" && role !== "worker" && role !== "user" ?
                     <><Link to="/shows" style={{marginRight: "10px"}} className="btn btn-outline-primary">
                         {"Shows"}
                     </Link>
@@ -50,7 +56,7 @@ export const Header = (props) => {
                     <Link to="/my-schedule" style={{marginRight: "10px"}} className="btn btn-outline-primary">
                         {"My schedule"}
                     </Link> : ""}
-                {state === "profile" ?
+                {role && state === "profile" ?
                     <>
                         <Link to="/update-profile" style={{marginRight: "10px"}} className="btn btn-outline-primary">
                             {"Update profile info"}
@@ -62,7 +68,7 @@ export const Header = (props) => {
                     : ""}
                 {state === "public" ?
                     <>
-                        <Link to="/" style={{marginRight: "10px"}} className="btn btn-outline-primary">
+                        <Link to="/profile" style={{marginRight: "10px"}} className="btn btn-outline-primary">
                             {"Main"}
                         </Link>
                     </>

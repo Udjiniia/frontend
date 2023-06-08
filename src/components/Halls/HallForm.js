@@ -11,14 +11,15 @@ import {MenuItem} from "@mui/material";
 
 export const HallForm = (props) => {
     const navigation = useNavigate()
-    const [errorMsg, setErrorMsg] = useState("")
-    const [name, setName] = useState("")
-    const [capacity, setCapacity] = useState("")
-    const [status, setStatus] = useState("")
-    const [details, setDetails] = useState("")
-    const [rows, setRows] = useState("")
+    const [errorMsg, setErrorMsg] = useState()
+    const [name, setName] = useState()
+    const [capacity, setCapacity] = useState()
+    const [status, setStatus] = useState()
+    const [details, setDetails] = useState()
+    const [rows, setRows] = useState()
     const update = props.update
     const hall = props.hall
+    const [data, setData] = useState(false)
 
     const {handleSubmit, formState: {errors}} = useForm({})
 
@@ -79,7 +80,23 @@ export const HallForm = (props) => {
     }, [hall])
 
 
-    return (<div className="Auth-form-container">
+    useEffect(() => {
+        if (details) {
+            setData(true)
+        }
+    }, [details])
+
+
+    useEffect(() => {
+        if (!update) {
+            setData(true)
+        }
+    }, [])
+
+    return (
+        <div>
+            {data ?
+        <div className="Auth-form-container">
             <form onSubmit={handleSubmit(update ? hallUpdate : hallSubmit)} className="Auth-form">
                 <div className="Auth-form-content">
                     <h3 className="Auth-form-title">{update ? "Update the hall" : "Create a new hall"}</h3>
@@ -174,5 +191,6 @@ export const HallForm = (props) => {
                     </div>
                 </div>
             </form>
+        </div> : ""}
         </div>)
 };

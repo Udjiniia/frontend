@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {instance, url} from "../../axios.js";
-import {useLocation} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 
 
 String.prototype.trimLen = function (length) {
@@ -83,6 +83,13 @@ export const Employee = (props) => {
                         Make {employee.firstName} {employee.lastName} {employee.status === `active` ? `inactive` : `active`}
                     </button>
                 </div>
+                {employee.userRole === "worker" ?
+                <div className={"d-flex justify-content-center"}>
+                    <Link to={`/employee-schedule/${employee._id}`} style={{marginRight: "10px"}}
+                          className="btn btn-primary">
+                        {`Check worker schedule`}
+                    </Link>
+                </div> : ""}
                 <div className=" forgot-password text-right mt-2" style={{color: 'red'}}>
                     {errorMsg}
                 </div>

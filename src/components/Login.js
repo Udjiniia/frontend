@@ -12,9 +12,9 @@ export const Login = (props) => {
         const navigation = useNavigate()
         const updatePassword = props.updatePassword;
         const msg = location.state === null ? "" : location.state.msg
-        const [errorMsg, setErrorMsg] = useState("")
-        const [email, setEmail] = useState("")
-        const [password, setPassword] = useState("")
+        const [errorMsg, setErrorMsg] = useState()
+        const [email, setEmail] = useState()
+        const [password, setPassword] = useState()
 
         const {handleSubmit, formState: {errors}} = useForm()
 

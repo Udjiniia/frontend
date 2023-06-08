@@ -10,8 +10,9 @@ String.prototype.trimLenFrom = function (start, length) {
 
 export const PerformanceSession = () => {
     const {id} = useParams();
-    const [sessions, setSessions] = useState("")
-    const [performance, setPerformance] = useState("")
+    const [sessions, setSessions] = useState()
+    const [performance, setPerformance] = useState()
+    const [data, setData] = useState(false)
 
     const getSessions = () => {
         try {
@@ -51,19 +52,28 @@ export const PerformanceSession = () => {
         getPerformance()
     }, [])
 
+    useEffect(() => {
+        if (performance) {
+            setData(true)
+        }
+    }, [performance])
+
     return (
         <div>
-            <div className={"d-flex justify-content-center"}>
-                {performance ?
-                    <Performance admin={true} performance={performance}/> : ""}
-            </div>
-            <div className={"d-flex justify-content-center"}>
-                <div className={"gallery"}>
-                    {
-                        sessions ?
-                            sessions.map((s) => <Session key={s._id} session={s}/>) : ""}
-                </div>
-            </div>
+            {data ?
+                <div>
+                    <div className={"d-flex justify-content-center"}>
+                        {performance ?
+                            <Performance admin={true} performance={performance}/> : ""}
+                    </div>
+                    <div className={"d-flex justify-content-center"}>
+                        <div className={"gallery"}>
+                            {
+                                sessions ?
+                                    sessions.map((s) => <Session key={s._id} session={s}/>) : ""}
+                        </div>
+                    </div>
+                </div> : ""}
         </div>
     )
 }

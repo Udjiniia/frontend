@@ -4,10 +4,10 @@ import {useEffect, useState} from "react";
 
 
 
-export const url = "http://localhost:5000"
-//export const url = ""
-export const baseUrl = "http://localhost:5000"
-//export const baseUrl = process.env.APP_API_BASE_URL
+//export const url = "http://localhost:5000"
+export const url = ""
+//export const baseUrl = "http://localhost:5000"
+export const baseUrl = process.env.APP_API_BASE_URL
 
 export const instance = axios.create({
     baseURL: baseUrl

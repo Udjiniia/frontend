@@ -17,7 +17,9 @@ export const Performance = (props) => {
     const onDelete = () => {
         if (window.confirm("Are you sure you want to delete this performance?")) {
             try {
-                instance.delete(`/performance/delete/${performance._id}`)
+                instance.delete(`/performance/delete/${performance._id}`).then(() => {
+                    navigation("/performances")
+                })
                     .catch(error => {
                         console.log(error.response.data.message);
                     })
@@ -29,8 +31,6 @@ export const Performance = (props) => {
             }
         }
     }
-
-
 
 
     return (
@@ -48,17 +48,18 @@ export const Performance = (props) => {
                         <div className={"d-flex justify-content-center"}>
                             <p style={{marginTop: "20px"}}> Author: {performance.show.author} </p>
                         </div>
-                        { performance.performanceTime ?
-                        <div className={"d-flex justify-content-center"}>
-                            <p style={{marginTop: "20px"}}> Performance starting time: {performance.performanceTime.trimLenFrom(0, 10)} {performance.performanceTime.trimLenFrom(11, 16)} </p>
-                        </div> : ""}
+                        {performance.performanceTime ?
+                            <div className={"d-flex justify-content-center"}>
+                                <p style={{marginTop: "20px"}}> Performance starting
+                                    time: {performance.performanceTime.trimLenFrom(0, 10)} {performance.performanceTime.trimLenFrom(11, 16)} </p>
+                            </div> : ""}
                         <div className={"d-flex justify-content-center"}>
                             <p> Hall: {performance.hall.name} </p>
                         </div>
-                        { performance.show.duration ?
-                        <div className={"d-flex justify-content-center"}>
-                            <p> Duration: {performance.show.duration.trimLenFrom(11, 16)} </p>
-                        </div> : ""}
+                        {performance.show.duration ?
+                            <div className={"d-flex justify-content-center"}>
+                                <p> Duration: {performance.show.duration.trimLenFrom(11, 16)} </p>
+                            </div> : ""}
                         <div className={"d-flex justify-content-center"}>
                             <p> Details: {performance.show.details} </p>
                         </div>
@@ -67,24 +68,32 @@ export const Performance = (props) => {
                         </div>
                     </div>
                 </div>
-                { !schedule && !admin ?
-                <div className={"d-flex justify-content-center"}>
-                    <Link to={`/all-tickets/${performance._id}`} style={{marginRight: "10px"}} className="btn btn-primary">
-                        {`Check tickets`}
-                    </Link>
-                    <Link to={`/workers/${performance._id}`} style={{marginRight: "10px"}} className="btn btn-primary">
-                        {`Check workers`}
-                    </Link>
-                    <button onClick={() => {onDelete()
-                        navigation("/profile")}} className="btn btn-danger">
-                        {`Delete performance`}
-                    </button>
-                   </div> : "" }
-                { buying ?
+                {!schedule && !admin ?
                     <div className={"d-flex justify-content-center"}>
-                        <Link to={`/tickets/${performance._id}`} style={{marginRight: "10px"}} className="btn btn-primary">
+                        <Link to={`/all-tickets/${performance._id}`} style={{marginRight: "10px"}}
+                              className="btn btn-primary">
+                            {`Check tickets`}
+                        </Link>
+                        <Link to={`/workers/${performance._id}`} style={{marginRight: "10px"}}
+                              className="btn btn-primary">
+                            {`Check workers`}
+                        </Link>
+                        <Link to={`/performance-reschedule/${performance._id}`} style={{marginRight: "10px"}}
+                              className="btn btn-primary">
+                            {`Reschedule`}
+                        </Link>
+                        <button onClick={() => {
+                            onDelete()
+                        }} className="btn btn-danger">
+                            {`Delete performance`}
+                        </button>
+                    </div> : ""}
+                {buying ?
+                    <div className={"d-flex justify-content-center"}>
+                        <Link to={`/tickets/${performance._id}`} style={{marginRight: "10px"}}
+                              className="btn btn-primary">
                             {"Buy tickets"}
-                        </Link> </div> : "" }
+                        </Link></div> : ""}
             </form>
         </div>
     )

@@ -18,19 +18,17 @@ export const PerformanceChoose = (props) => {
         const navigation = useNavigate()
         let now = new Date()
         now = now.toISOString().split('T')[0]
-         const [errorMsg, setErrorMsg] = useState("")
+        const [errorMsg, setErrorMsg] = useState("")
         const [timeFull, setTimeFull] = useState("2023-05-01T00:00:00.000+00:00")
         const [hall, setHall] = useState("")
         const [show, setShow] = useState("")
         const [performanceAvatarUrl, setPerformanceAvatarUrl] = useState("/uploads/show.jpg")
-        const [time, setDuration] = useState(timeFull.trimPart(11, 16))
+        const [time, setTime] = useState(timeFull.trimPart(11, 16))
         const [date, setDate] = useState(now)
-        const [dateFull, setDateFull] = useState("2000-01-01T00:00:00.000+00:00")
         const [details, setDetails] = useState("")
         const [interval, setInterval] = useState("10")
         const performance = props.performance
         const inputFileRef = useRef(null);
-        const [halls, setHalls] = useState([])
         const [shows, setShows] = useState([])
         const [slots, setSlots] = useState([])
         const [sessions, setSessions] = useState([])
@@ -38,7 +36,7 @@ export const PerformanceChoose = (props) => {
         const [rows, setRows] = useState([])
         const [prices, setPrices] = useState([])
         const [workers, setWorkers] = useState([])
-        const ref = useRef(null)
+
 
 
         const {handleSubmit, formState: {errors}} = useForm({})
@@ -83,43 +81,6 @@ export const PerformanceChoose = (props) => {
         }
 
 
-        const getHalls = () => {
-            try {
-                instance.get(`/hall/all`).then(res => {
-                    setHalls(res.data)
-                })
-                    .catch(error => {
-                        console.log(error.response.data.message);
-                    })
-            } catch
-                (error) {
-                if (error.response) {
-                    console.log(error.response.data.message);
-                }
-            }
-        }
-
-        const getHall = () => {
-            try {
-                instance.post(`/hall/name`, {name: hall}).then(res => {
-                    const rows = []
-                    for (let i = 1; i <= parseInt(res.data.rows); i++) {
-                        rows.push(i)
-                    }
-                    setRows(rows)
-                    setPrices(rows)
-                })
-                    .catch(error => {
-                        console.log(error.response.data.message);
-                    })
-            } catch
-                (error) {
-                if (error.response) {
-                    console.log(error.response.data.message);
-                }
-            }
-        }
-
         const getWorkers = () => {
             try {
                 instance.get(`/employee/workers/active`).then(res => {
@@ -158,7 +119,8 @@ export const PerformanceChoose = (props) => {
                     interval: interval,
                     date: date,
                     show: show,
-                    sessions: sessions.slice(0, counts.length)
+                    sessions: sessions.slice(0, counts.length),
+                    hall: null
                 }).then(res => {
                     setSlots(res.data)
                 })
@@ -182,13 +144,11 @@ export const PerformanceChoose = (props) => {
                 setHall(performance.hall)
                 setDetails(performance.details)
             }
-            getHalls()
         }, [show])
 
 
         useEffect(() => {
             setTimeFull(timeFull.replaceAt(0, date))
-            setDateFull(dateFull.replaceAt(0, date))
         }, [date])
 
         useEffect(() => {
@@ -197,7 +157,12 @@ export const PerformanceChoose = (props) => {
 
         useEffect(() => {
             if (hall) {
-                getHall()
+                const rows = []
+                for (let i = 1; i <= parseInt(hall.rows); i++) {
+                    rows.push(i)
+                }
+                setRows(rows)
+                setPrices(rows)
             }
         }, [hall])
 
@@ -312,9 +277,6 @@ export const PerformanceChoose = (props) => {
                                     helperText={errors.details?.message}
                                 />
                             </div>
-                            <div className=" forgot-password text-right mt-2" style={{color: 'red'}}>
-                                {errorMsg}
-                            </div>
                             <div className="d-grid gap-2 mt-3">
                                 <button type="button" onClick={() => inputFileRef.current.click()}
                                         className="btn btn-outline-primary">
@@ -367,9 +329,6 @@ export const PerformanceChoose = (props) => {
                                         Get slots
                                     </button>
                                 </div> : ""}
-                            <button ref={ref} id={"but"} type="submit" className="btn btn-primary" hidden={true}>
-                                Submit
-                            </button>
                             <div className={"d-flex justify-content-center"}>
                                 <div id={"gallery"} className={"gallery"}>
                                     {
@@ -385,7 +344,7 @@ export const PerformanceChoose = (props) => {
                                     {hall ? <>
                                         <div className={"d-flex justify-content-center"}>
                                             <div className="d-grid gap-2 mt-3">
-                                                <h5> Зала: {hall} &nbsp; </h5>
+                                                <h5> Зала: {hall.name} &nbsp; </h5>
                                             </div>
                                         </div>
                                         <br/>
@@ -412,10 +371,13 @@ export const PerformanceChoose = (props) => {
                                             </div>
                                         ) : ""
                                         }
+                                        <div className=" forgot-password text-right mt-2" style={{color: 'red'}}>
+                                            {errorMsg}
+                                        </div>
                                     </div>
                                     {hall && rows ?
                                         <div className="d-grid gap-2 mt-3">
-                                            <button ref={ref} id={"but"} type="submit" className="btn btn-primary">
+                                            <button type="submit" className="btn btn-primary">
                                                 Submit
                                             </button>
                                         </div> : ""}

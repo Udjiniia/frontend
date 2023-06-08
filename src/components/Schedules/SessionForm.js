@@ -7,11 +7,11 @@ import {useForm} from "react-hook-form";
 
 export const SessionForm = (props) => {
 
-    const [role, setRole] = useState("")
-    const [salary, setSalary] = useState("")
-    const [worker, setWorker] = useState("")
+    const [role, setRole] = useState()
+    const [salary, setSalary] = useState()
+    const [worker, setWorker] = useState()
     const workers = props.workers
-    const [session, setSession] = useState([])
+    const [session, setSession] = useState()
 
 
     const {handleSubmit, formState: {errors}} = useForm({})
@@ -24,7 +24,7 @@ export const SessionForm = (props) => {
     useEffect(() => {
         props.adding(session)
     }, [session])
-    //
+
 
     return (<div className="Auth-form-container">
         <form className="Auth-form">

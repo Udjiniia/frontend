@@ -9,16 +9,17 @@ import {useNavigate} from 'react-router-dom';
 
 export const Registration = (props) => {
     const navigation = useNavigate()
-    const [errorMsg, setErrorMsg] = useState("")
+    const [errorMsg, setErrorMsg] = useState()
     const registration = props.signUp;
-    const [firstName, setFirstName] = useState("")
-    const [phone, setPhone] = useState("")
-    const [lastName, setLastName] = useState("")
-    const [birthday, setBirthday] = useState("")
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
+    const [firstName, setFirstName] = useState()
+    const [phone, setPhone] = useState()
+    const [lastName, setLastName] = useState()
+    const [birthday, setBirthday] = useState()
+    const [email, setEmail] = useState()
+    const [password, setPassword] = useState()
     const [avatarUrl, setAvatarUrl] = useState("/uploads/anon.jpg")
-    const inputFileRef = useRef(null);
+    const inputFileRef = useRef(null)
+    const [data, setData] = useState(false)
 
 
     const {handleSubmit, formState: {errors}} = useForm({})
@@ -95,7 +96,17 @@ export const Registration = (props) => {
                 console.log(error.response.data.message);
             }
         }
-    }, [registration])
+        if (registration) {
+            setData(true)
+        }
+    }, [])
+
+    useEffect(() => {
+        if (avatarUrl) {
+            setData(true)
+        }
+    }, [avatarUrl])
+
 
     const updateSubmit = () => {
         try {
@@ -130,6 +141,8 @@ export const Registration = (props) => {
 
 
     return (
+        <div>
+        {data ?
         <div className="Auth-form-container">
             <form onSubmit={handleSubmit(registration ? registerSubmit : updateSubmit)} className="Auth-form">
                 <div className="Auth-form-content">
@@ -251,6 +264,7 @@ export const Registration = (props) => {
                         </p> : ""}
                 </div>
             </form>
+        </div> : "" }
         </div>
     )
 };

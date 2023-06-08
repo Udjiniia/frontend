@@ -17,7 +17,7 @@ export const HallSlot = (props) => {
         <div className="Auth-form-container">
             <form className="Auth-form">
                 <div className="Auth-form-content">
-                    <h3 className="Auth-form-title"> {hall}</h3>
+                    <h3 className="Auth-form-title"> {hall.name}</h3>
                 </div>
                 {
                     slots ? slots.map((s) =>
