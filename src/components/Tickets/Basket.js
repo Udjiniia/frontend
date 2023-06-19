@@ -7,7 +7,7 @@ String.prototype.trimLenFrom = function (start, length) {
 }
 
 export const Basket = () => {
-    const [tickets, setTickets] = useState([])
+    const [tickets, setTickets] = useState()
     const [errorMsg, setErrorMsg] = useState()
     const [data, setData] = useState(false)
 

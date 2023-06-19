@@ -38,7 +38,6 @@ export const PerformanceChoose = (props) => {
         const [workers, setWorkers] = useState([])
 
 
-
         const {handleSubmit, formState: {errors}} = useForm({})
 
         String.prototype.replaceAt = function (index, replacement) {
@@ -329,6 +328,19 @@ export const PerformanceChoose = (props) => {
                                         Get slots
                                     </button>
                                 </div> : ""}
+                            {hall ? <>
+                                <div className={"d-flex justify-content-center"}>
+                                    <div className="d-grid gap-2 mt-3">
+                                        <h5> Зала: {hall.name} &nbsp; </h5>
+                                    </div>
+                                </div>
+                                <div className={"d-flex justify-content-center"}>
+                                    <div className="d-grid gap-2 mt-3">
+                                        <h5> Час: {timeFull.trimPart(11, 16)}</h5>
+                                    </div>
+                                </div>
+                            </> : ""
+                            }
                             <div className={"d-flex justify-content-center"}>
                                 <div id={"gallery"} className={"gallery"}>
                                     {
@@ -341,20 +353,8 @@ export const PerformanceChoose = (props) => {
 
 
                                     }
-                                    {hall ? <>
-                                        <div className={"d-flex justify-content-center"}>
-                                            <div className="d-grid gap-2 mt-3">
-                                                <h5> Зала: {hall.name} &nbsp; </h5>
-                                            </div>
-                                        </div>
-                                        <br/>
-                                        <div className={"d-flex justify-content-center"}>
-                                            <div className="d-grid gap-2 mt-3">
-                                                <h5> Час: {timeFull.trimPart(11, 16)}</h5>
-                                            </div>
-                                        </div>
-                                    </> : ""
-                                    }
+                                </div>
+                                <div>
                                     <div>
                                         {hall && rows ? rows.map((r) =>
                                             <div className="form-group mt-sm-0">

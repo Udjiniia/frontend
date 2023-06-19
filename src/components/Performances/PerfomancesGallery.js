@@ -9,7 +9,7 @@ export const PerformancesGallery = (props) => {
     const buying = props.buying
     const location = useLocation();
     const msg = location.state === null ? "" : location.state.msg
-    const [performances, setPerformances] = useState([])
+    const [performances, setPerformances] = useState()
     const [data, setData] = useState(false)
     const [errorMsg, setErrorMsg] = useState()
 

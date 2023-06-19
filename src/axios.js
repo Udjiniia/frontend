@@ -3,7 +3,6 @@ import {Navigate, Route} from "react-router-dom";
 import {useEffect, useState} from "react";
 
 
-
 //export const url = "http://localhost:5000"
 export const url = ""
 //export const baseUrl = "http://localhost:5000"
@@ -15,7 +14,7 @@ export const instance = axios.create({
 
 instance.interceptors.request.use(function (config) {
     const token = window.localStorage.getItem('token');
-    config.headers.Authorization =  token ? `Bearer ${token}` : '';
+    config.headers.Authorization = token ? `Bearer ${token}` : '';
     return config;
 });
 

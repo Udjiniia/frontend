@@ -16,10 +16,10 @@ String.prototype.trimLenFrom = function (start, length) {
 export const Tickets = () => {
     const navigation = useNavigate()
     const {id} = useParams();
-    const [tickets, setTickets] = useState()
+    const [tickets, setTickets] = useState([])
     const [currentTicket, setCurrentTicket] = useState()
     const [deleteTicket, setDeleteTicket] = useState()
-    const [freeTickets, setFreeTickets] = useState()
+    const [freeTickets, setFreeTickets] = useState([])
     const [sum, setSum] = useState()
     const [performance, setPerformance] = useState()
     const [data, setData] = useState(false)

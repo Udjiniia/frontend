@@ -98,7 +98,7 @@ export const Home = (props) => {
                         {"Log out"}
                     </button>
                 </div>
-                {(user.role !== "head" && user.role !== "admin") ?
+                {(user.userRole !== "head" && user.userRole !== "admin") ?
                 <div className={"d-flex justify-content-center"}>
                     <button onClick={onDelete} className="btn btn-secondary">
                         {"Delete account"}

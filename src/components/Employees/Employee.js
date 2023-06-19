@@ -8,6 +8,8 @@ String.prototype.trimLen = function (length) {
 }
 
 export const Employee = (props) => {
+    let now = new Date()
+    now = now.toISOString().split('T')[0]
     const employee = props.employee
     const [errorMsg, setErrorMsg] = useState("")
     const [status, setStatus] = useState(employee.status)
@@ -15,7 +17,7 @@ export const Employee = (props) => {
 
     const updateStatus = () => {
         try {
-            instance.put(`/employee/updateStatus/${employee._id}`, {
+            instance.patch(`/employee/updateStatus/${employee._id}`, {
                 status: status
             }).catch(error => {
                 if (error.response.status === 400) {
@@ -74,6 +76,7 @@ export const Employee = (props) => {
                 </div>
                 <div className={"d-flex justify-content-center"} style={{marginBottom: "8px"}}>
                     <button onClick={() => {
+
                         if (employee.status === "active") {
                             setStatus("inactive")
                         } else {

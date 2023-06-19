@@ -11,7 +11,7 @@ export const SessionForm = (props) => {
     const [salary, setSalary] = useState()
     const [worker, setWorker] = useState()
     const workers = props.workers
-    const [session, setSession] = useState()
+    const [session, setSession] = useState([])
 
 
     const {handleSubmit, formState: {errors}} = useForm({})

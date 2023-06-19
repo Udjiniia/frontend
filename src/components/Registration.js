@@ -8,13 +8,15 @@ import {useNavigate} from 'react-router-dom';
 
 
 export const Registration = (props) => {
+    let now = new Date()
+    now = now.toISOString().split('T')[0]
     const navigation = useNavigate()
     const [errorMsg, setErrorMsg] = useState()
     const registration = props.signUp;
     const [firstName, setFirstName] = useState()
     const [phone, setPhone] = useState()
     const [lastName, setLastName] = useState()
-    const [birthday, setBirthday] = useState()
+    const [birthday, setBirthday] = useState(now)
     const [email, setEmail] = useState()
     const [password, setPassword] = useState()
     const [avatarUrl, setAvatarUrl] = useState("/uploads/anon.jpg")
